@@ -67,7 +67,6 @@ const QuizInput = () => {
       return;
     }
 
-    // TODO: Add API call to save pairs to database
     console.log("Pairs to save:", filledRows);
 
     setSuccess(true);
