@@ -1,0 +1,128 @@
+.container {
+  min-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.home-title-wrapper {
+  width: 80%;
+  max-width: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 30px;
+}
+
+.home-title {
+  text-align: center;
+  background-color: #d9d5c4;
+  width: 100%;
+  border-radius: 10px;
+  color: white;
+  text-shadow: 1px 1px 1px #666;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.home-title h1 {
+  font-size: clamp(24px, 5vw, 36px);
+  margin: 10px 0;
+  padding: 0 10px;
+  color: #666;
+  text-shadow: 2px 2px 2px white;
+}
+
+.home-title h2 {
+  font-size: clamp(18px, 4vw, 24px);
+  margin: 10px 0;
+  padding: 0 10px;
+  color: #666;
+  text-shadow: 2px 2px 2px white;
+}
+
+.home-image-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.home-image {
+  width: 50%;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.quiz-template-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 80%;
+  max-width: 600px;
+  background-color: #d9d5c4;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+}
+
+.quiz-template-wrapper h2 {
+  font-size: clamp(18px, 4vw, 24px);
+  color: #666;
+  text-shadow: 2px 2px 2px white;
+  margin: 15px 0;
+}
+
+.quiz-template-buttons {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  padding: 0 0 20px 0;
+}
+
+.quiz-button {
+  flex: 1;
+  padding: 10px;
+  margin: 0 30px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+  text-align: center;
+  font-size: clamp(14px, 3vw, 18px);
+  font-weight: bold;
+  text-decoration: none;
+  color: #666;
+  text-shadow: 2px 2px 2px white;
+  transition: all 0.3s ease;
+  width: 10%;
+}
+
+.quiz-button:hover {
+  background: #f5f3e3;
+  border-color: #bdb76b;
+}
+
+@media (max-width: 600px) {
+  .home-image {
+    width: 70%;
+  }
+
+  .quiz-button {
+    margin: 0 15px;
+    width: 50%;
+  }
+
+  .quiz-template-buttons {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+}

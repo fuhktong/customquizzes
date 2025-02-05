@@ -1,0 +1,16 @@
+body {
+  margin: 0;
+  /* font-family: "Short Stack", "Gills Sans", sans-serif; */
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+  background-color: #e8e4c9;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* .color-palette 
+  --lightest: #F5F3E3;  Very light beige 
+  --light: #E8E4C9;     Light khaki
+  --medium: #D3CFA3;    Medium khaki
+  --dark: #BDB76B;      Your darkkhaki
+*/

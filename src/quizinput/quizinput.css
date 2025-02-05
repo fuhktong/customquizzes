@@ -1,0 +1,176 @@
+.quiz-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.quiz-card {
+  background: #d9d5c4;
+  border-radius: 8px;
+  border: 5px solid #f5f3e3;
+  overflow: hidden;
+}
+
+.quiz-header {
+  padding: 24px;
+}
+
+.quiz-title {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 8px;
+  color: #666;
+  text-shadow: 2px 2px 2px white;
+  font-weight: bold;
+}
+
+.quiz-subtitle {
+  text-align: center;
+  color: #666;
+  text-shadow: 2px 2px 2px white;
+  font-weight: bold;
+  margin-bottom: 24px;
+}
+
+.spreadsheet-grid {
+  border: 1px solid #bdb76b;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.grid-header {
+  display: grid;
+  grid-template-columns: 50px 200px 1fr 80px;
+  background-color: #f8fafc;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.grid-header-cell:first-child {
+  text-align: center;
+}
+
+.grid-header-cell:last-child {
+  text-align: center;
+}
+
+.grid-header-cell {
+  padding: 8px;
+  border-right: 1px solid #bdb76b;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.grid-rows {
+  border-top: 1px solid #bdb76b;
+}
+
+.grid-row {
+  display: grid;
+  grid-template-columns: 50px 200px 1fr 80px;
+  border-bottom: 1px solid #bdb76b;
+}
+
+.grid-row:hover {
+  background-color: #f8fafc;
+}
+
+.row-number {
+  padding: 8px;
+  text-align: center;
+  background-color: #f8fafc;
+  border-right: 1px solid #bdb76b;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.grid-cell {
+  border-right: 1px solid #bdb76b;
+  background-color: #f8fafc;
+}
+
+.grid-input {
+  width: 100%;
+  padding: 8px;
+  border: none;
+  background: transparent;
+}
+
+.grid-input:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: -2px;
+}
+
+.delete-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8fafc;
+}
+
+.delete-button {
+  color: #ef4444;
+  padding: 4px;
+  border-radius: 50%;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.delete-button:hover {
+  background-color: #fee2e2;
+}
+
+.delete-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.add-row-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 24px auto;
+  padding: 8px 16px;
+  border: 1px solid #bdb76b;
+  border-radius: 8px;
+  background-color: #f8fafc;
+  cursor: pointer;
+}
+
+.add-row-button:hover {
+  background-color: #f8fafc;
+}
+
+.error-message {
+  background-color: #fef2f2;
+  border: 1px solid #fee2e2;
+  color: #dc2626;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin: 16px 0;
+}
+
+.success-message {
+  background-color: #f0fdf4;
+  border: 1px solid #dcfce7;
+  color: #16a34a;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin: 16px 0;
+}
+
+.submit-button {
+  display: block;
+  margin: 24px auto;
+  padding: 8px 24px;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.submit-button:hover {
+  background-color: #1d4ed8;
+}
