@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "./toggle.css";
 
-const Toggle = ({ isOpen, toggleMenu }) => {
+const Toggle = ({ isOpen, toggleMenu, isLoggedIn, userEmail, onLogout }) => {
   return (
     <div className="mobile-nav">
       <button
@@ -15,23 +15,55 @@ const Toggle = ({ isOpen, toggleMenu }) => {
       </button>
 
       <div className={`mobile-menu ${isOpen ? "open" : ""}`}>
-        <ul>
-          <li>
-            <Link to="/definitions" onClick={toggleMenu}>
-              DEFINITIONS
+        <div className="mobile-content">
+          <Link
+            to="/quiz-maker"
+            onClick={toggleMenu}
+            className="mobile-heading"
+          >
+            Quiz Maker
+          </Link>
+
+          <hr className="mobile-divider" />
+
+          <p className="mobile-heading">Fallacy Quiz</p>
+          <Link to="/landing-names" onClick={toggleMenu}>
+            Names
+          </Link>
+          <Link to="/landing-descriptions" onClick={toggleMenu}>
+            Descriptions
+          </Link>
+          <Link to="/definitions" onClick={toggleMenu}>
+            Definitions
+          </Link>
+
+          <hr className="mobile-divider" />
+
+          {isLoggedIn ? (
+            <>
+              <p>{userEmail}</p>
+              <Link to="/profile" onClick={toggleMenu}>
+                Profile
+              </Link>
+              <Link to="/my-quizzes" onClick={toggleMenu}>
+                My Quizzes
+              </Link>
+              <Link to="/my-results" onClick={toggleMenu}>
+                My Results
+              </Link>
+              <Link to="/settings" onClick={toggleMenu}>
+                Settings
+              </Link>
+              <button onClick={onLogout} className="mobile-link">
+                Logout
+              </button>
+            </>
+          ) : (
+            <Link to="/login" onClick={toggleMenu} className="mobile-heading">
+              Login
             </Link>
-          </li>
-          <li>
-            <Link to="/descriptions" onClick={toggleMenu}>
-              DESCRIPTIONS
-            </Link>
-          </li>
-          <li>
-            <Link to="/names" onClick={toggleMenu}>
-              NAMES
-            </Link>
-          </li>
-        </ul>
+          )}
+        </div>
       </div>
     </div>
   );

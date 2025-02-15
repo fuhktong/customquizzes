@@ -19,6 +19,7 @@ const QuizMaker = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const tableRef = useRef(null);
+  const [quizTitle, setQuizTitle] = useState("");
 
   const handlePaste = (e) => {
     e.preventDefault();
@@ -78,7 +79,14 @@ const QuizMaker = () => {
 
   return (
     <div className="quiz-container">
-      {!showQuiz ? (
+      {showQuiz ? (
+        <QuizInterface
+          quizItems={rows.filter(
+            (row) => row.name.trim() && row.description.trim()
+          )}
+          quizTitle={quizTitle}
+        />
+      ) : (
         <div className="quiz-card">
           <div className="quiz-header">
             <h2 className="quiz-title">Create Your Custom Quiz</h2>
@@ -89,6 +97,15 @@ const QuizMaker = () => {
             </p>
 
             <form onSubmit={handleSubmit}>
+              <div className="quiz-title-input">
+                <input
+                  type="text"
+                  value={quizTitle}
+                  onChange={(e) => setQuizTitle(e.target.value)}
+                  placeholder="Enter quiz title..."
+                  className="title-input"
+                />
+              </div>
               <div
                 ref={tableRef}
                 onPaste={handlePaste}
@@ -167,12 +184,6 @@ const QuizMaker = () => {
             </form>
           </div>
         </div>
-      ) : (
-        <QuizInterface
-          quizItems={rows.filter(
-            (row) => row.name.trim() && row.description.trim()
-          )}
-        />
       )}
     </div>
   );

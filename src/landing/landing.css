@@ -1,0 +1,128 @@
+.landing-container {
+  min-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.landing-title-wrapper {
+  width: 80%;
+  max-width: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 30px;
+  border: 5px solid #f5f3e3;
+  border-radius: 8px;
+}
+
+.landing-title {
+  text-align: center;
+  background-color: #d9d5c4;
+  width: 100%;
+  color: white;
+}
+
+.landing-title h1 {
+  font-size: clamp(24px, 5vw, 36px);
+  margin: 10px 0;
+  padding: 0 10px;
+  color: #666;
+  text-shadow: 1.2px 1.2px 0.5px white;
+}
+
+.landing-title h2 {
+  font-size: clamp(18px, 4vw, 24px);
+  margin: 10px 0;
+  padding: 0 10px;
+  color: #666;
+  text-shadow: 1.2px 1.2px 0.5px white;
+}
+
+.landing-image-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.landing-image {
+  width: 50%;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.landing-quiz-template-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 80%;
+  max-width: 600px;
+  background-color: #d9d5c4;
+  border-radius: 10px;
+  margin-bottom: 30px;
+  border: 5px solid #f5f3e3;
+  border-radius: 8px;
+}
+
+.landing-quiz-template-wrapper h2 {
+  font-size: clamp(18px, 4vw, 24px);
+  color: #666;
+  text-shadow: 1.2px 1.2px 0.5px white;
+  margin: 15px 0;
+}
+
+.landing-quiz-template-buttons {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  padding: 0 0 20px 0;
+}
+
+.landing-quiz-button {
+  flex: 1;
+  padding: 10px;
+  margin: 0 30px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+  text-align: center;
+  font-size: clamp(14px, 3vw, 18px);
+  font-weight: bold;
+  text-decoration: none;
+  color: #666;
+  text-shadow: 1.2px 1.2px 0.5px white;
+  transition: all 0.3s ease;
+  width: 10%;
+}
+
+.landing-quiz-button:hover {
+  background: #f5f3e3;
+  border-color: #bdb76b;
+}
+
+@media (max-width: 600px) {
+  .landing-image {
+    width: 70%;
+  }
+
+  .landing-quiz-button {
+    margin: 0 15px;
+    width: 50%;
+  }
+
+  .landing-quiz-template-buttons {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+}

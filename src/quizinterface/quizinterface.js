@@ -1,29 +1,26 @@
 import React, { useState, useEffect } from "react";
+import Settings from "../settings/settings.js";
 import "./quizinterface.css";
 
-const QuizInterface = ({ quizItems }) => {
+const QuizInterface = ({ quizItems, quizTitle }) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [score, setScore] = useState(0);
   const [showScore, setShowScore] = useState(false);
   const [options, setOptions] = useState([]);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
-  const [isCorrect, setIsCorrect] = useState(null);
+  const [isAnswered, setIsAnswered] = useState(false);
+  const [questionCount, setQuestionCount] = useState(10); // Default to 10 questions
 
   useEffect(() => {
     if (quizItems && quizItems.length > 0) {
-      // Generate options for current question
       const generateOptions = () => {
-        // Get current term's correct description
         const correctAnswer = quizItems[currentQuestion].description;
-
-        // Get 3 random wrong descriptions
         const wrongAnswers = quizItems
           .filter((item, index) => index !== currentQuestion)
           .map((item) => item.description)
           .sort(() => Math.random() - 0.5)
           .slice(0, 3);
 
-        // Combine and shuffle all options
         const allOptions = [...wrongAnswers, correctAnswer].sort(
           () => Math.random() - 0.5
         );
@@ -32,39 +29,44 @@ const QuizInterface = ({ quizItems }) => {
       };
 
       generateOptions();
+      setIsAnswered(false);
+      setSelectedAnswer(null);
     }
   }, [currentQuestion, quizItems]);
 
   const handleAnswerClick = (selectedDescription) => {
-    if (isCorrect !== null) return; // Prevent multiple answers
+    if (isAnswered) return;
 
-    const correct =
-      selectedDescription === quizItems[currentQuestion].description;
     setSelectedAnswer(selectedDescription);
-    setIsCorrect(correct);
+    setIsAnswered(true);
 
-    if (correct) {
+    if (selectedDescription === quizItems[currentQuestion].description) {
       setScore(score + 1);
     }
-
-    // Wait before moving to next question
-    setTimeout(() => {
-      if (currentQuestion < quizItems.length - 1) {
-        setCurrentQuestion(currentQuestion + 1);
-        setSelectedAnswer(null);
-        setIsCorrect(null);
-      } else {
-        setShowScore(true);
-      }
-    }, 1500);
   };
 
-  const restartQuiz = () => {
+  const handleNextQuestion = () => {
+    if (currentQuestion < Math.min(questionCount - 1, quizItems.length - 1)) {
+      setCurrentQuestion(currentQuestion + 1);
+    } else {
+      setShowScore(true);
+    }
+  };
+
+  const handleReset = () => {
     setCurrentQuestion(0);
     setScore(0);
     setShowScore(false);
     setSelectedAnswer(null);
-    setIsCorrect(null);
+    setIsAnswered(false);
+  };
+
+  const handleQuestionCountChange = (newCount) => {
+    setQuestionCount(newCount);
+    if (currentQuestion >= newCount) {
+      setCurrentQuestion(0);
+      handleReset();
+    }
   };
 
   if (!quizItems || quizItems.length === 0) {
@@ -79,13 +81,17 @@ const QuizInterface = ({ quizItems }) => {
             <h2 className="quiz-title">Quiz Complete!</h2>
             <div className="score-display">
               <p>
-                You scored {score} out of {quizItems.length}
+                You scored {score} out of{" "}
+                {Math.min(questionCount, quizItems.length)}
               </p>
               <p className="score-percentage">
-                {Math.round((score / quizItems.length) * 100)}%
+                {Math.round(
+                  (score / Math.min(questionCount, quizItems.length)) * 100
+                )}
+                %
               </p>
             </div>
-            <button onClick={restartQuiz} className="restart-button">
+            <button onClick={handleReset} className="restart-button">
               Try Again
             </button>
           </div>
@@ -98,29 +104,52 @@ const QuizInterface = ({ quizItems }) => {
     <div className="quiz-container">
       <div className="quiz-card">
         <div className="quiz-header">
+          <h1 className="quiz-main-title">{quizTitle}</h1>
           <div className="quiz-progress">
-            Question {currentQuestion + 1} of {quizItems.length}
+            Question {currentQuestion + 1} of{" "}
+            {Math.min(questionCount, quizItems.length)}
           </div>
-          <div className="score-indicator">Score: {score}</div>
-          <h2 className="quiz-title">{quizItems[currentQuestion].name}</h2>
+          <div className="name-term-question">
+            <p>
+              What is the definition of "{quizItems[currentQuestion].name}" ?
+            </p>
+          </div>
           <div className="options-grid">
             {options.map((option, index) => (
               <button
                 key={index}
                 onClick={() => handleAnswerClick(option)}
                 className={`option-button ${
-                  selectedAnswer === option
-                    ? isCorrect
+                  isAnswered
+                    ? option === quizItems[currentQuestion].description
                       ? "correct"
-                      : "incorrect"
+                      : option === selectedAnswer && "incorrect"
                     : ""
                 }`}
-                disabled={selectedAnswer !== null}
+                disabled={isAnswered}
               >
                 {option}
               </button>
             ))}
           </div>
+        </div>
+      </div>
+
+      <div className="bottom-container">
+        {isAnswered && (
+          <button onClick={handleNextQuestion} className="next-button">
+            Next Question
+          </button>
+        )}
+        <div className="controls">
+          <div className="score">
+            Score: {score}/{Math.min(questionCount, quizItems.length)}
+          </div>
+          <Settings
+            questionCount={questionCount}
+            onCountChange={handleQuestionCountChange}
+            onReset={handleReset}
+          />
         </div>
       </div>
     </div>

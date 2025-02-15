@@ -2,6 +2,7 @@
   max-width: 1000px;
   margin: 0 auto;
   padding: 20px;
+  position: relative;
 }
 
 .quiz-card {
@@ -9,6 +10,7 @@
   border-radius: 8px;
   border: 5px solid #f5f3e3;
   overflow: hidden;
+  margin-bottom: 20px;
 }
 
 .quiz-header {
@@ -20,7 +22,7 @@
   font-size: 16px;
   color: #666;
   margin-bottom: 12px;
-  text-shadow: 2px 2px 2px white;
+  text-shadow: 1.2px 1.2px 0.5px white;
   font-weight: bold;
 }
 
@@ -29,17 +31,16 @@
   font-size: 18px;
   color: #666;
   margin-bottom: 16px;
-  text-shadow: 2px 2px 2px white;
+  text-shadow: 1.2px 1.2px 0.5px white;
   font-weight: bold;
 }
 
-.quiz-title {
-  font-size: 24px;
+.name-term-question {
+  font-size: 20px;
   font-weight: bold;
-  text-align: center;
-  margin-bottom: 24px;
-  color: #666;
-  text-shadow: 2px 2px 2px white;
+  padding: 0 10px;
+  margin: 0;
+  text-align: left;
 }
 
 .options-grid {
@@ -78,6 +79,48 @@
   border-color: #dc2626;
 }
 
+.bottom-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10px;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-left: auto;
+}
+
+.next-button {
+  padding: 10px 20px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.next-button:hover {
+  background-color: #0056b3;
+}
+
+.quiz-controls {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.score {
+  text-align: right;
+  font-size: 20px;
+  font-weight: bold;
+  margin-left: auto;
+}
+
 .score-display {
   text-align: center;
   margin: 24px 0;
@@ -87,7 +130,7 @@
   font-size: 18px;
   color: #666;
   margin: 8px 0;
-  text-shadow: 2px 2px 2px white;
+  text-shadow: 1.2px 1.2px 0.5px white;
   font-weight: bold;
 }
 
@@ -95,7 +138,7 @@
   font-size: 48px;
   font-weight: bold;
   color: #666;
-  text-shadow: 2px 2px 2px white;
+  text-shadow: 1.2px 1.2px 0.5px white;
 }
 
 .restart-button {
@@ -113,4 +156,32 @@
 
 .restart-button:hover {
   background-color: #d3cfa3;
+}
+
+.quiz-main-title {
+  font-size: 28px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+  color: #666;
+  text-shadow: 1.2px 1.2px 0.5px white;
+}
+
+.quiz-title-input {
+  margin-bottom: 24px;
+}
+
+.title-input {
+  width: 100%;
+  padding: 12px;
+  font-size: 18px;
+  border: 2px solid #bdb76b;
+  border-radius: 8px;
+  background-color: #f8fafc;
+}
+
+.title-input:focus {
+  outline: none;
+  border-color: #d3cfa3;
+  box-shadow: 0 0 0 2px rgba(189, 183, 107, 0.2);
 }

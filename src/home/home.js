@@ -7,30 +7,20 @@ const HomePage = () => {
   return (
     <PageTransition>
       <div className="container">
-        <div className="home-title-wrapper">
-          <div className="home-title">
-            <h1>The Logical Fallacy Quiz</h1>
-            <h2>Test Your Critical Thinking Skills</h2>
-          </div>
-        </div>
-
-        <div className="home-image-wrapper">
-          {" "}
+        <div className="home-wrapper">
           <img
-            src="/logicalfallacyhomepic3.png"
-            alt="Logical Fallacy Quiz"
+            src="/customquizzeslogo.png"
+            alt="Custom Quizzes"
             className="home-image"
           />
-        </div>
-
-        <div className="quiz-template-wrapper">
-          <h2>Choose your Quiz Template:</h2>
+          <h1>
+            Create your own customized quizzes, great for educators and learners
+            of all ages!
+          </h1>
+          <p>Click here to start making your quiz:</p>
           <div className="quiz-template-buttons">
-            <Link to="/names" className="quiz-button">
-              Names
-            </Link>
-            <Link to="/descriptions" className="quiz-button">
-              Descriptions
+            <Link to="/quiz-maker" className="quiz-button">
+              Start Quiz Maker
             </Link>
           </div>
         </div>

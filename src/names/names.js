@@ -106,7 +106,7 @@ const Names = () => {
           Question #{currentIndex + 1}:
         </div>
         <div className="names-question">
-          <p>What is the defintion of "{currentQuestion.name}" ?</p>
+          <p>What is the definition of "{currentQuestion.name}" ?</p>
         </div>
         <div className="names-options">
           {currentOptions.map((option, index) => (

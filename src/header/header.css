@@ -13,12 +13,14 @@ header {
   display: flex;
   align-items: center;
   gap: 15px;
+  cursor: pointer;
 }
 
 header img {
   height: 50px;
   width: auto;
   padding-left: 60px;
+  cursor: pointer;
 }
 
 header a {
@@ -34,7 +36,7 @@ header a {
 .header-title p {
   margin: 0;
   color: #666;
-  text-shadow: 2px 2px 2px white;
+  text-shadow: 1.2px 1.2px 0.5px white;
   font-weight: bold;
   font-size: clamp(10px, 5vw, 16px);
 }
