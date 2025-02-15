@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useAuth } from "../context/authcontext";
 import "./auth.css";
 
 const Login = () => {
-  const navigate = useNavigate();
+  const { login, setIsLoggedIn } = useAuth();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -21,14 +22,7 @@ const Login = () => {
     e.preventDefault();
     setError("");
 
-    console.log("Attempting login with:", formData);
-
     try {
-      console.log(
-        "Fetching from:",
-        `${process.env.REACT_APP_API_URL}/login.php`
-      );
-
       const response = await fetch(
         `${process.env.REACT_APP_API_URL}/login.php`,
         {
@@ -40,18 +34,17 @@ const Login = () => {
         }
       );
 
-      console.log("Response status:", response.status);
       const data = await response.json();
-      console.log("Response data:", data);
 
       if (response.ok) {
-        localStorage.setItem("userEmail", data.user.email);
-        navigate("/");
+        login(data.user.email);
+        setIsLoggedIn(true);
+        setError("");
+        window.location.href = "/";
       } else {
         setError(data.error || "Login failed");
       }
     } catch (err) {
-      console.error("Login error:", err);
       setError("Network error. Please try again.");
     }
   };

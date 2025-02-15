@@ -1,32 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../context/authcontext.js";
 import "./header.css";
 import NavBar from "./navbar";
 import Toggle from "./toggle.js";
 
 const Header = () => {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userEmail, setUserEmail] = useState("");
-
-  useEffect(() => {
-    const loggedInUser = localStorage.getItem("userEmail");
-    if (loggedInUser) {
-      setIsLoggedIn(true);
-      setUserEmail(loggedInUser);
-    }
-  }, []);
-
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem("userEmail");
-    setIsLoggedIn(false);
-    setUserEmail("");
-    window.location.reload();
-  };
+  const { isLoggedIn, userEmail, logout } = useAuth();
 
   return (
     <header>
@@ -37,14 +17,12 @@ const Header = () => {
         <NavBar
           isLoggedIn={isLoggedIn}
           userEmail={userEmail}
-          onLogout={handleLogout}
+          onLogout={logout}
         />
         <Toggle
-          isOpen={menuOpen}
-          toggleMenu={toggleMenu}
           isLoggedIn={isLoggedIn}
           userEmail={userEmail}
-          onLogout={handleLogout}
+          onLogout={logout}
         />
       </div>
     </header>
