@@ -1,6 +1,8 @@
 .mobile-nav {
   display: block;
   padding-right: 20px;
+  position: relative;
+  z-index: 101;
 }
 
 .hamburger {
@@ -64,7 +66,7 @@
   transition: transform 0.3s ease;
   border-top: 5px solid #f5f3e3;
   overflow-y: auto;
-  z-index: -1;
+  z-index: 100;
 }
 
 .mobile-menu.open {

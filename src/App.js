@@ -10,6 +10,7 @@ import LandingNames from "./landing/landing-names.js";
 import LandingDescriptions from "./landing/landing-descriptions.js";
 import Login from "./auth/login.js";
 import Register from "./auth/register.js";
+import Settings from "./settings/settings.js";
 import { AuthProvider } from "./context/authcontext.js";
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
           <Route path="descriptions" element={<Descriptions />} />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
+          <Route path="settings" element={<Settings />} />
         </Routes>
       </div>
     </AuthProvider>

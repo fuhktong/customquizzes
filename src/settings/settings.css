@@ -1,79 +1,94 @@
 .settings-container {
-  position: relative;
-  border-radius: 50%;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
+  padding: 2rem;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
-.settings-button {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: rgba(217, 213, 196, 0.95);
-  border: 2px solid #ccc;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.2s;
-}
-
-.settings-button:hover {
-  transform: rotate(45deg);
-}
-
-.settings-panel {
-  position: absolute;
-  top: 100%;
-  right: 0;
-  background: rgba(217, 213, 196, 0.95);
-  padding: 15px;
+.settings-card {
+  background-color: white;
   border-radius: 8px;
-  border: 2px solid #ccc;
-  margin-top: 10px;
-  min-width: 100px;
-  gap: 10px;
+  padding: 2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.settings-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  color: #666;
+}
+
+.settings-section {
+  margin-bottom: 2rem;
+}
+
+.settings-section h3 {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: #666;
+}
+
+.email-display {
+  color: #666;
+  padding: 0.5rem 0;
+}
+
+.password-form {
   display: flex;
   flex-direction: column;
-  visibility: hidden;
-  opacity: 0;
-  transform: translateY(-20px);
-  transition: all 0.3s ease;
+  gap: 1rem;
 }
 
-.settings-panel.open {
-  visibility: visible;
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.settings-panel-title p {
-  text-align: center;
-  font-size: 12px;
-  font-weight: bold;
-  margin: 0;
-}
-
-.question-control {
+.form-group {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 5px;
-  gap: 0;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
-.question-control-button {
-  padding: 5px 10px;
-}
-
-.question-count {
-  text-align: center;
-  font-size: 18px;
-  min-width: 40px;
-  padding: 0 5px;
-}
-
-.reset-button {
-  padding: 10px 15px;
+.form-group label {
   font-size: 14px;
+  font-weight: 500;
+  color: #666;
+}
+
+.form-group input {
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.error-message {
+  background-color: #fee2e2;
+  border: 1px solid #ef4444;
+  color: #dc2626;
+  padding: 0.75rem;
+  border-radius: 4px;
+  margin-top: 0.5rem;
+}
+
+.success-message {
+  background-color: #dcfce7;
+  border: 1px solid #22c55e;
+  color: #16a34a;
+  padding: 0.75rem;
+  border-radius: 4px;
+  margin-top: 0.5rem;
+}
+
+.update-button {
+  background-color: #d9d5c4;
+  color: #666;
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.update-button:hover {
+  background-color: #e8e4c9;
 }

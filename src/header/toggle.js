@@ -42,14 +42,8 @@ const Toggle = ({ isOpen, toggleMenu, isLoggedIn, userEmail, onLogout }) => {
           {isLoggedIn ? (
             <>
               <p>{userEmail}</p>
-              <Link to="/profile" onClick={toggleMenu}>
-                Profile
-              </Link>
               <Link to="/my-quizzes" onClick={toggleMenu}>
                 My Quizzes
-              </Link>
-              <Link to="/my-results" onClick={toggleMenu}>
-                My Results
               </Link>
               <Link to="/settings" onClick={toggleMenu}>
                 Settings

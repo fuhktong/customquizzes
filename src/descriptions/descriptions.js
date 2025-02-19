@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import Settings from "../settings/settings.js";
+import Settings from "../gearsettings/gearsettings.js";
 import GradePopup from "../gradepopup/gradepopup.js";
 import PageTransition from "../pagetransition.js";
 import "./descriptions.css";

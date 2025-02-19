@@ -14,7 +14,7 @@ const Definitions = () => {
 
   return (
     <PageTransition>
-      <div className="defintions-page">
+      <div className="definitions-page">
         <h2>Logical Fallacy Quiz - Definitions</h2>
         <div className="fallacy-container">
           {fallacies.map((fallacy, index) => (

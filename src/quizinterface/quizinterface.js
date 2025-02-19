@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Settings from "../settings/settings.js";
+import Settings from "../gearsettings/gearsettings.js";
 import "./quizinterface.css";
 
 const QuizInterface = ({ quizItems, quizTitle }) => {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/authcontext.js";
 import "./header.css";
@@ -7,6 +7,11 @@ import Toggle from "./toggle.js";
 
 const Header = () => {
   const { isLoggedIn, userEmail, logout } = useAuth();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
 
   return (
     <header>
@@ -23,6 +28,8 @@ const Header = () => {
           isLoggedIn={isLoggedIn}
           userEmail={userEmail}
           onLogout={logout}
+          isOpen={isMenuOpen}
+          toggleMenu={toggleMenu}
         />
       </div>
     </header>

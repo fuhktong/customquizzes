@@ -24,9 +24,7 @@ const NavBar = ({ isLoggedIn, userEmail, onLogout }) => {
             <div className="account-dropdown">
               <button className="nav-login-button">{userEmail}</button>
               <div className="account-dropdown-content">
-                <Link to="/profile">Profile</Link>
                 <Link to="/my-quizzes">My Quizzes</Link>
-                <Link to="/my-results">My Results</Link>
                 <Link to="/settings">Settings</Link>
                 <button onClick={onLogout} className="dropdown-logout">
                   Logout
