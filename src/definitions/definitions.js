@@ -6,7 +6,9 @@ const Definitions = () => {
   const [fallacies, setFallacies] = useState([]);
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/get-fallacies.php`)
+    fetch(
+      `${process.env.REACT_APP_API_URL}/backend_logicalfallacy/get-fallacies.php`
+    )
       .then((response) => response.json())
       .then((data) => setFallacies(data))
       .catch((error) => console.error("Error:", error));

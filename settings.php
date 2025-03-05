@@ -41,7 +41,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     try {
-        // First verify current password
         $stmt = $pdo->prepare('SELECT password_hash FROM users WHERE id = ?');
         $stmt->execute([$data['userId']]);
         $user = $stmt->fetch();

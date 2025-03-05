@@ -32,7 +32,9 @@ const Names = () => {
   }, []);
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/get-fallacies.php`)
+    fetch(
+      `${process.env.REACT_APP_API_URL}/backend_logicalfallacy/get-fallacies.php`
+    )
       .then((response) => response.json())
       .then((data) => {
         const shuffled = [...data]

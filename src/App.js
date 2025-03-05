@@ -12,6 +12,7 @@ import Login from "./auth/login.js";
 import Register from "./auth/register.js";
 import Settings from "./settings/settings.js";
 import { AuthProvider } from "./context/authcontext.js";
+import MyQuizzes from "./myquizzes/myquizzes.js";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
           <Route path="descriptions" element={<Descriptions />} />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
+          <Route path="my-quizzes" element={<MyQuizzes />} />
           <Route path="settings" element={<Settings />} />
         </Routes>
       </div>
