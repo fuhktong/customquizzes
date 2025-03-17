@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Plus, Trash2 } from "lucide-react";
 import QuizInterface from "../quizinterface/quizinterface";
 import "./quizmaker.css";
@@ -18,8 +18,77 @@ const QuizMaker = () => {
   ]);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
   const tableRef = useRef(null);
   const [quizTitle, setQuizTitle] = useState("");
+  const [showQuiz, setShowQuiz] = useState(false);
+
+  // Get URL query parameters to check if we're in edit mode
+  const queryParams = new URLSearchParams(window.location.search);
+  const isEditMode = queryParams.get("edit") === "true";
+  const quizId = queryParams.get("id");
+  const quizTitleFromUrl = queryParams.get("title");
+
+  // If in edit mode, load the quiz data
+  useEffect(() => {
+    if (isEditMode && quizId) {
+      setLoading(true);
+      // Set the quiz title from URL immediately (for better UX)
+      if (quizTitleFromUrl) {
+        setQuizTitle(decodeURIComponent(quizTitleFromUrl));
+      }
+
+      const fetchQuizData = async () => {
+        try {
+          const authToken = localStorage.getItem("authToken");
+
+          const response = await fetch(
+            `/backend_apiandconfig/api.php?action=getQuizDetails&quizId=${quizId}`,
+            {
+              headers: {
+                Authorization: `Bearer ${authToken}`,
+              },
+            }
+          );
+
+          const data = await response.json();
+
+          if (response.ok && data.questions) {
+            // Format questions to match our rows format
+            const quizQuestions = data.questions.map((q) => ({
+              name: q.name || "",
+              description: q.description || "",
+            }));
+
+            // Make sure we have at least 10 rows total (add empty ones if needed)
+            if (quizQuestions.length < 10) {
+              const emptyRowsNeeded = 10 - quizQuestions.length;
+              const emptyRows = Array(emptyRowsNeeded)
+                .fill()
+                .map(() => ({ name: "", description: "" }));
+              setRows([...quizQuestions, ...emptyRows]);
+            } else {
+              setRows(quizQuestions);
+            }
+
+            // Set title if not already set from URL
+            if (!quizTitleFromUrl && data.title) {
+              setQuizTitle(data.title);
+            }
+          } else {
+            setError(data.error || "Failed to load quiz data");
+          }
+        } catch (err) {
+          console.error("Error fetching quiz:", err);
+          setError("Network error. Please try again.");
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      fetchQuizData();
+    }
+  }, [isEditMode, quizId, quizTitleFromUrl]);
 
   const handlePaste = (e) => {
     e.preventDefault();
@@ -55,12 +124,11 @@ const QuizMaker = () => {
     }
   };
 
-  const [showQuiz, setShowQuiz] = useState(false);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setSuccess(false);
+    setLoading(true);
 
     const filledRows = rows.filter(
       (row) => row.name.trim() && row.description.trim()
@@ -68,13 +136,69 @@ const QuizMaker = () => {
 
     if (filledRows.length < 1) {
       setError("Please fill in at least one pair of name and description");
+      setLoading(false);
       return;
     }
 
-    setSuccess(true);
-    setTimeout(() => {
-      setShowQuiz(true);
-    }, 1500);
+    // Get authentication token
+    const authToken = localStorage.getItem("authToken");
+    if (!authToken) {
+      setError("You must be logged in to create quizzes");
+      setLoading(false);
+      return;
+    }
+
+    // Prepare quiz data
+    const quizData = {
+      title: quizTitle || "Untitled Quiz",
+      questions: filledRows,
+    };
+
+    // If in edit mode, add the quiz ID
+    if (isEditMode && quizId) {
+      quizData.quizId = quizId;
+    }
+
+    try {
+      // Save quiz to database - use updateQuiz for edit mode or createQuiz for new quizzes
+      const response = await fetch(
+        `/backend_apiandconfig/api.php?action=${
+          isEditMode ? "updateQuiz" : "createQuiz"
+        }`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authToken}`,
+          },
+          body: JSON.stringify(quizData),
+        }
+      );
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setSuccess(true);
+
+        // If creating a new quiz, store the new quiz ID for the interface
+        if (!isEditMode && data.quizId) {
+          quizData.quizId = data.quizId;
+        }
+
+        setTimeout(() => {
+          setShowQuiz(true);
+        }, 1500);
+      } else {
+        setError(
+          data.error || `Failed to ${isEditMode ? "update" : "save"} quiz`
+        );
+      }
+    } catch (err) {
+      console.error(`Error ${isEditMode ? "updating" : "saving"} quiz:`, err);
+      setError("Network error. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -85,16 +209,21 @@ const QuizMaker = () => {
             (row) => row.name.trim() && row.description.trim()
           )}
           quizTitle={quizTitle}
+          quizId={isEditMode ? quizId : undefined}
         />
       ) : (
         <div className="quiz-card">
           <div className="quiz-header">
-            <h2 className="quiz-title">Create Your Custom Quiz</h2>
+            <h2 className="quiz-title">
+              {isEditMode ? "Edit Quiz" : "Create Your Custom Quiz"}
+            </h2>
             <p className="quiz-subtitle">
               Paste directly from Excel or enter data manually. Select all cells
               in Excel and copy (Ctrl+C), then paste (Ctrl+V) into the grid
               below.
             </p>
+
+            {loading && <div className="loading-indicator">Loading...</div>}
 
             <form onSubmit={handleSubmit}>
               <div className="quiz-title-input">
@@ -174,12 +303,21 @@ const QuizMaker = () => {
 
               {success && (
                 <div className="success-message">
-                  Quiz content saved successfully! Redirecting to quiz...
+                  Quiz {isEditMode ? "updated" : "created"} successfully!
+                  Redirecting to quiz...
                 </div>
               )}
 
-              <button type="submit" className="submit-button">
-                Create Quiz
+              <button
+                type="submit"
+                className="submit-button"
+                disabled={loading}
+              >
+                {loading
+                  ? "Saving..."
+                  : isEditMode
+                  ? "Update Quiz"
+                  : "Create Quiz"}
               </button>
             </form>
           </div>

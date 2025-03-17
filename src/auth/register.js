@@ -1,14 +1,16 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./auth.css";
 
 const Register = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    email: "",
+    username: "",
     password: "",
     confirmPassword: "",
   });
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -20,13 +22,44 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setLoading(true);
 
     if (formData.password !== formData.confirmPassword) {
       setError("Passwords do not match");
+      setLoading(false);
       return;
     }
 
-    console.log("Registration attempt:", formData);
+    try {
+      // Call the API with the action parameter
+      const response = await fetch(
+        `/backend_apiandconfig/api.php?action=register`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            username: formData.username, //Backend expects username
+            password: formData.password,
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Registration successful, redirect to login
+        setLoading(false);
+        navigate("/login");
+      } else {
+        setError(data.error || "Registration failed");
+        setLoading(false);
+      }
+    } catch (err) {
+      setError("Network error. Please try again.");
+      setLoading(false);
+    }
   };
 
   return (
@@ -37,11 +70,11 @@ const Register = () => {
         <form onSubmit={handleSubmit} className="auth-form">
           <div className="form-group">
             <input
-              type="email"
-              name="email"
-              value={formData.email}
+              type="text"
+              name="username"
+              value={formData.username}
               onChange={handleChange}
-              placeholder="Email"
+              placeholder="Username or Email"
               required
             />
           </div>
@@ -65,8 +98,8 @@ const Register = () => {
               required
             />
           </div>
-          <button type="submit" className="auth-button">
-            Register
+          <button type="submit" className="auth-button" disabled={loading}>
+            {loading ? "Registering..." : "Register"}
           </button>
         </form>
         <p className="auth-link">

@@ -25,6 +25,8 @@
   height: auto;
   margin-bottom: 30px;
   display: block;
+  max-width: 500px;
+  object-fit: contain;
 }
 
 .container h1 {

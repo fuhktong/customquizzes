@@ -1,15 +1,17 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authcontext";
 import "./auth.css";
 
 const Login = () => {
+  const navigate = useNavigate();
   const { login, setIsLoggedIn } = useAuth();
   const [formData, setFormData] = useState({
-    email: "",
+    username: "", // Changed from email to username to match backend
     password: "",
   });
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -21,31 +23,47 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setLoading(true);
+
+    console.log("Attempting login with:", formData);
 
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/login.php`,
+        `/backend_apiandconfig/api.php?action=login`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(formData),
+          body: JSON.stringify({
+            username: formData.username,
+            password: formData.password,
+          }),
         }
       );
 
       const data = await response.json();
 
+      console.log("API Response:", data);
+
       if (response.ok) {
-        login(data.user.email);
+        // Store token in localStorage
+        localStorage.setItem("authToken", data.token);
+        localStorage.setItem("userId", data.user.id);
+
+        // Update auth context
+        login(data.user.username);
         setIsLoggedIn(true);
         setError("");
-        window.location.href = "/";
+        navigate("/");
       } else {
         setError(data.error || "Login failed");
+        setLoading(false);
       }
     } catch (err) {
+      console.error("Full error:", err);
       setError("Network error. Please try again.");
+      setLoading(false);
     }
   };
 
@@ -57,11 +75,11 @@ const Login = () => {
         <form onSubmit={handleSubmit} className="auth-form">
           <div className="form-group">
             <input
-              type="email"
-              name="email"
-              value={formData.email}
+              type="text"
+              name="username"
+              value={formData.username}
               onChange={handleChange}
-              placeholder="Email"
+              placeholder="Username"
               required
             />
           </div>
@@ -75,8 +93,8 @@ const Login = () => {
               required
             />
           </div>
-          <button type="submit" className="auth-button">
-            Login
+          <button type="submit" className="auth-button" disabled={loading}>
+            {loading ? "Logging in..." : "Login"}
           </button>
         </form>
         <p className="auth-link">

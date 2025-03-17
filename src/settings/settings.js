@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
+import { useAuth } from "../context/authcontext.js";
 import "./settings.css";
 
 const Settings = () => {
@@ -7,56 +8,90 @@ const Settings = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const userId = localStorage.getItem("userId");
+  const { userEmail: contextUserEmail } = useAuth(); // Renamed to show it's from context
 
-  const fetchUserEmail = useCallback(async () => {
+  const fetchUserData = useCallback(async () => {
     try {
+      // First check if we already have username from context
+      if (contextUserEmail) {
+        setUsername(contextUserEmail);
+        return;
+      }
+
+      const userId = localStorage.getItem("userId");
+      const authToken = localStorage.getItem("authToken");
+
+      if (!userId || !authToken) {
+        setError("You must be logged in to view settings");
+        return;
+      }
+
       const response = await fetch(
-        `http://localhost/your-backend-path/settings.php?userId=${userId}`
+        `${process.env.REACT_APP_API_URL}/api.php?action=settings&userId=${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
       );
+
       const data = await response.json();
 
       if (response.ok) {
-        setEmail(data.email);
+        setUsername(data.email); // Using email from the API response
       } else {
-        setError(data.error);
+        setError(data.error || "Failed to fetch user data");
       }
     } catch (err) {
-      setError("Failed to fetch user email");
+      setError("Failed to fetch user data");
     }
-  }, [userId]);
+  }, [contextUserEmail]);
 
   useEffect(() => {
-    fetchUserEmail();
-  }, [fetchUserEmail]);
+    fetchUserData();
+  }, [fetchUserData]);
 
   const handlePasswordChange = async (e) => {
     e.preventDefault();
     setError("");
     setSuccess("");
+    setLoading(true);
 
     if (newPassword !== confirmPassword) {
       setError("New passwords do not match");
+      setLoading(false);
       return;
     }
 
     if (newPassword.length < 6) {
       setError("Password must be at least 6 characters long");
+      setLoading(false);
       return;
     }
 
     try {
+      const userId = localStorage.getItem("userId");
+      const authToken = localStorage.getItem("authToken");
+
+      if (!userId || !authToken) {
+        setError("You must be logged in to change your password");
+        setLoading(false);
+        return;
+      }
+
       const response = await fetch(
-        "http://localhost/your-backend-path/settings.php",
+        `/backend_apiandconfig/api.php?action=settings`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${authToken}`,
           },
           body: JSON.stringify({
-            userId,
+            userId: userId,
             currentPassword,
             newPassword,
           }),
@@ -71,10 +106,12 @@ const Settings = () => {
         setNewPassword("");
         setConfirmPassword("");
       } else {
-        setError(data.error);
+        setError(data.error || "Failed to update password");
       }
     } catch (err) {
       setError("Failed to update password. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -84,12 +121,15 @@ const Settings = () => {
         <h1 className="settings-title">Settings</h1>
 
         <div className="settings-section">
-          <h3>Email Address</h3>
-          <p className="email-display">{email}</p>
+          <h3>Username</h3>
+          <p className="email-display">{username}</p>
         </div>
 
         <div className="settings-section">
           <h3>Change Password</h3>
+          {error && <div className="error-message">{error}</div>}
+          {success && <div className="success-message">{success}</div>}
+
           <form onSubmit={handlePasswordChange} className="password-form">
             <div className="form-group">
               <label>Current Password</label>
@@ -121,12 +161,8 @@ const Settings = () => {
               />
             </div>
 
-            {error && <div className="error-message">{error}</div>}
-
-            {success && <div className="success-message">{success}</div>}
-
-            <button type="submit" className="update-button">
-              Update Password
+            <button type="submit" className="update-button" disabled={loading}>
+              {loading ? "Updating..." : "Update Password"}
             </button>
           </form>
         </div>

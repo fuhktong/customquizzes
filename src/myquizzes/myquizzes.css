@@ -19,10 +19,6 @@
   transition: transform 0.2s ease;
 }
 
-.quiz-card:hover {
-  transform: translateY(-2px);
-}
-
 .quiz-card h2 {
   color: #666;
   text-shadow: 1.2px 1.2px 0.5px white;
@@ -32,8 +28,8 @@
 
 .quiz-card p {
   color: #666;
-  margin: 5px 0;
-  font-size: 14px;
+  margin: 20px 0 10px 0;
+  font-size: 25px;
 }
 
 .quiz-actions {

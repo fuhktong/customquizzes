@@ -1,10 +1,14 @@
 {
     "cSpell.words": [
+        "apiandconfig",
+        "customquizzes",
         "ERRMODE",
         "gearsettings",
         "logicalfallacy",
         "logicalfallcy",
         "Quoque",
+        "shadcn",
         "Strawman"
-    ]
+    ],
+    "CodeGPT.apiKey": "CodeGPT Plus Beta"
 }

@@ -3,6 +3,10 @@ import { Link } from "react-router-dom";
 import "./toggle.css";
 
 const Toggle = ({ isOpen, toggleMenu, isLoggedIn, userEmail, onLogout }) => {
+  const handleLogout = () => {
+    onLogout();
+    window.location.href = "/";
+  };
   return (
     <div className="mobile-nav">
       <button
@@ -48,7 +52,7 @@ const Toggle = ({ isOpen, toggleMenu, isLoggedIn, userEmail, onLogout }) => {
               <Link to="/settings" onClick={toggleMenu}>
                 Settings
               </Link>
-              <button onClick={onLogout} className="mobile-link">
+              <button onClick={handleLogout} className="mobile-link">
                 Logout
               </button>
             </>

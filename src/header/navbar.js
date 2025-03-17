@@ -3,6 +3,10 @@ import { Link } from "react-router-dom";
 import "./navbar.css";
 
 const NavBar = ({ isLoggedIn, userEmail, onLogout }) => {
+  const handleLogout = () => {
+    onLogout();
+    window.location.href = "/";
+  };
   return (
     <nav className="desktop-nav">
       <ul>
@@ -26,7 +30,7 @@ const NavBar = ({ isLoggedIn, userEmail, onLogout }) => {
               <div className="account-dropdown-content">
                 <Link to="/my-quizzes">My Quizzes</Link>
                 <Link to="/settings">Settings</Link>
-                <button onClick={onLogout} className="dropdown-logout">
+                <button onClick={handleLogout} className="dropdown-logout">
                   Logout
                 </button>
               </div>

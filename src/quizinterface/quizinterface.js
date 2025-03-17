@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
-import Settings from "../gearsettings/gearsettings.js";
+import GearSettings from "../gearsettings/gearsettings.js";
 import "./quizinterface.css";
 
-const QuizInterface = ({ quizItems, quizTitle }) => {
+const QuizInterface = (props) => {
+  // State for quiz data and functionality
+  const [quizItems, setQuizItems] = useState([]);
+  const [quizTitle, setQuizTitle] = useState("");
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [score, setScore] = useState(0);
   const [showScore, setShowScore] = useState(false);
@@ -11,6 +14,65 @@ const QuizInterface = ({ quizItems, quizTitle }) => {
   const [isAnswered, setIsAnswered] = useState(false);
   const [questionCount, setQuestionCount] = useState(10); // Default to 10 questions
 
+  // State for loading quiz from URL
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  // Get URL parameters if present
+  const queryParams = new URLSearchParams(window.location.search);
+  const quizIdFromUrl = queryParams.get("id");
+  const quizTitleFromUrl = queryParams.get("title");
+
+  // Load quiz data from API if accessed via URL parameters
+  useEffect(() => {
+    // Get quiz items and title from props inside the effect
+    const propQuizItems = props.quizItems || [];
+    const propQuizTitle = props.quizTitle || "";
+
+    if (quizIdFromUrl && propQuizItems.length === 0) {
+      setLoading(true);
+      const loadQuizData = async () => {
+        try {
+          const authToken = localStorage.getItem("authToken");
+
+          const response = await fetch(
+            `/backend_apiandconfig/api.php?action=getQuizDetails&quizId=${quizIdFromUrl}`,
+            {
+              headers: {
+                Authorization: `Bearer ${authToken}`,
+              },
+            }
+          );
+
+          const data = await response.json();
+
+          if (response.ok && data.questions) {
+            // Set quiz items from API response
+            setQuizItems(data.questions);
+
+            // Set quiz title
+            const finalTitle = quizTitleFromUrl || data.title || "Quiz";
+            setQuizTitle(finalTitle);
+          } else {
+            setError(data.error || "Failed to load quiz");
+          }
+        } catch (err) {
+          console.error("Error loading quiz:", err);
+          setError("Network error. Please try again.");
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      loadQuizData();
+    } else if (propQuizItems.length > 0) {
+      // Initialize from props if available
+      setQuizItems(propQuizItems);
+      setQuizTitle(propQuizTitle);
+    }
+  }, [quizIdFromUrl, quizTitleFromUrl, props.quizItems, props.quizTitle]);
+
+  // Generate multiple choice options when current question changes
   useEffect(() => {
     if (quizItems && quizItems.length > 0) {
       const generateOptions = () => {
@@ -69,10 +131,22 @@ const QuizInterface = ({ quizItems, quizTitle }) => {
     }
   };
 
+  // Show loading indicator while fetching quiz
+  if (loading) {
+    return <div className="quiz-container">Loading quiz...</div>;
+  }
+
+  // Show error message if something went wrong
+  if (error) {
+    return <div className="quiz-container">{error}</div>;
+  }
+
+  // Show message if no quiz items are available
   if (!quizItems || quizItems.length === 0) {
     return <div className="quiz-container">No quiz items available.</div>;
   }
 
+  // Show the score screen when quiz is complete
   if (showScore) {
     return (
       <div className="quiz-container">
@@ -100,6 +174,7 @@ const QuizInterface = ({ quizItems, quizTitle }) => {
     );
   }
 
+  // Render the quiz interface
   return (
     <div className="quiz-container">
       <div className="quiz-card">
@@ -145,7 +220,7 @@ const QuizInterface = ({ quizItems, quizTitle }) => {
           <div className="score">
             Score: {score}/{Math.min(questionCount, quizItems.length)}
           </div>
-          <Settings
+          <GearSettings
             questionCount={questionCount}
             onCountChange={handleQuestionCountChange}
             onReset={handleReset}

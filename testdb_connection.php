@@ -3,7 +3,7 @@ require_once 'db_connection.php';
 
 try {
 
-    $stmt = $pdo->query('SELECT * FROM quizzes LIMIT 1');
+    $stmt = $pdo->query('SELECT * FROM users LIMIT 1');
     $quiz = $stmt->fetch();
     
     if ($quiz) {
