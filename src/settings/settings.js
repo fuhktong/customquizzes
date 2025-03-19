@@ -30,7 +30,7 @@ const Settings = () => {
       }
 
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/api.php?action=settings&userId=${userId}`,
+        `${process.env.REACT_APP_API_URL}api.php?action=settings&userId=${userId}`,
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -82,21 +82,18 @@ const Settings = () => {
         return;
       }
 
-      const response = await fetch(
-        `/backend_apiandconfig/api.php?action=settings`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${authToken}`,
-          },
-          body: JSON.stringify({
-            userId: userId,
-            currentPassword,
-            newPassword,
-          }),
-        }
-      );
+      const response = await fetch(`/api.php?action=settings`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
+        },
+        body: JSON.stringify({
+          userId: userId,
+          currentPassword,
+          newPassword,
+        }),
+      });
 
       const data = await response.json();
 

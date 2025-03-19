@@ -1,14 +1,24 @@
 {
     "cSpell.words": [
         "apiandconfig",
+        "apifunctions",
+        "createquiz",
         "customquizzes",
+        "deletequiz",
         "ERRMODE",
         "gearsettings",
+        "generatetoken",
+        "getquizdetails",
+        "getuseridfromtoken",
+        "getuserquizzes",
+        "getusersettings",
         "logicalfallacy",
         "logicalfallcy",
         "Quoque",
         "shadcn",
-        "Strawman"
+        "Strawman",
+        "updatequiz",
+        "updateuserpassword"
     ],
     "CodeGPT.apiKey": "CodeGPT Plus Beta"
 }

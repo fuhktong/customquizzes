@@ -35,7 +35,7 @@ export const AuthProvider = ({ children }) => {
 
       if (token) {
         // Call the logout API
-        await fetch(`/backend_apiandconfig/api.php?action=logout`, {
+        await fetch(`/api.php?action=logout`, {
           method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,

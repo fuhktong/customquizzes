@@ -36,7 +36,7 @@ const QuizInterface = (props) => {
           const authToken = localStorage.getItem("authToken");
 
           const response = await fetch(
-            `/backend_apiandconfig/api.php?action=getQuizDetails&quizId=${quizIdFromUrl}`,
+            `api.php?action=getQuizDetails&quizId=${quizIdFromUrl}`,
             {
               headers: {
                 Authorization: `Bearer ${authToken}`,

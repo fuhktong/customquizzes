@@ -32,19 +32,16 @@ const Register = () => {
 
     try {
       // Call the API with the action parameter
-      const response = await fetch(
-        `/backend_apiandconfig/api.php?action=register`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            username: formData.username, //Backend expects username
-            password: formData.password,
-          }),
-        }
-      );
+      const response = await fetch(`/api.php?action=register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: formData.username, //Backend expects username
+          password: formData.password,
+        }),
+      });
 
       const data = await response.json();
 

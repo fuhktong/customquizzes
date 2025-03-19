@@ -43,7 +43,7 @@ const QuizMaker = () => {
           const authToken = localStorage.getItem("authToken");
 
           const response = await fetch(
-            `/backend_apiandconfig/api.php?action=getQuizDetails&quizId=${quizId}`,
+            `api.php?action=getQuizDetails&quizId=${quizId}`,
             {
               headers: {
                 Authorization: `Bearer ${authToken}`,
@@ -162,9 +162,7 @@ const QuizMaker = () => {
     try {
       // Save quiz to database - use updateQuiz for edit mode or createQuiz for new quizzes
       const response = await fetch(
-        `/backend_apiandconfig/api.php?action=${
-          isEditMode ? "updateQuiz" : "createQuiz"
-        }`,
+        `api.php?action=${isEditMode ? "updateQuiz" : "createQuiz"}`,
         {
           method: "POST",
           headers: {

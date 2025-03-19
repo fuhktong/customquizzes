@@ -28,19 +28,16 @@ const Login = () => {
     console.log("Attempting login with:", formData);
 
     try {
-      const response = await fetch(
-        `/backend_apiandconfig/api.php?action=login`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            username: formData.username,
-            password: formData.password,
-          }),
-        }
-      );
+      const response = await fetch(`/api.php?action=login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: formData.username,
+          password: formData.password,
+        }),
+      });
 
       const data = await response.json();
 

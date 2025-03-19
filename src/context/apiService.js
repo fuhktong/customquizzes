@@ -8,7 +8,7 @@
  * @returns {Promise} - The API response
  */
 export const apiRequest = async (action, method = "GET", data = null) => {
-  const apiUrl = `${process.env.REACT_APP_API_URL}/api.php?action=${action}`;
+  const apiUrl = `${process.env.REACT_APP_API_URL}api.php?action=${action}`;
   const authToken = localStorage.getItem("authToken");
 
   const headers = {

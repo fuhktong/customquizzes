@@ -20,20 +20,17 @@ const MyQuizzes = () => {
         return;
       }
 
-      const response = await fetch(
-        `/backend_apiandconfig/api.php?action=getUserQuizzes`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${authToken}`,
-          },
-          body: JSON.stringify({
-            email: userEmail,
-            userId: userId,
-          }),
-        }
-      );
+      const response = await fetch(`/api.php?action=getUserQuizzes`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
+        },
+        body: JSON.stringify({
+          email: userEmail,
+          userId: userId,
+        }),
+      });
 
       const data = await response.json();
       if (response.ok) {
@@ -67,19 +64,16 @@ const MyQuizzes = () => {
     try {
       const authToken = localStorage.getItem("authToken");
 
-      const response = await fetch(
-        `/backend_apiandconfig/api.php?action=deleteQuiz`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${authToken}`,
-          },
-          body: JSON.stringify({
-            quizId: quizId,
-          }),
-        }
-      );
+      const response = await fetch(`/api.php?action=deleteQuiz`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
+        },
+        body: JSON.stringify({
+          quizId: quizId,
+        }),
+      });
 
       const data = await response.json();
 

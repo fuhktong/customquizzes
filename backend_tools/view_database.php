@@ -1,5 +1,5 @@
 <?php
-require_once 'db_connection.php';
+require_once '../db_connection.php';
 
 // Set page title
 $title = 'MySQL Database Viewer';
