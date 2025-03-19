@@ -1,25 +1,20 @@
 <?php
-// Force PHP to display all errors for debugging
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-// Essential: Always send CORS headers first, before any other output
 header("Access-Control-Allow-Origin: http://localhost:3000");
 header("Access-Control-Allow-Credentials: true");
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
-header("Access-Control-Max-Age: 86400"); // Cache preflight for 24 hours
+header("Access-Control-Max-Age: 86400");
+header("Content-Type: application/json");
 
-// Immediately handle preflight OPTIONS requests and exit
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    // Ensure 200 OK status and exit
     http_response_code(200);
     exit;
 }
-
-// Set content type to JSON for all other responses
-header("Content-Type: application/json");
 
 require_once 'config.php'; 
 require_once 'backend_apifunctions/createquiz.php';
@@ -35,16 +30,13 @@ require_once 'backend_apifunctions/register.php';
 require_once 'backend_apifunctions/updatequiz.php';
 require_once 'backend_apifunctions/updateuserpassword.php';
 
-// Create a new database connection
 $conn = new mysqli(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
 
-// Check connection
 if ($conn->connect_error) {
     http_response_code(500);
     die(json_encode(["error" => "Connection failed: " . $conn->connect_error]));
 }
 
-// Add a new column to users table for auth token if it doesn't exist
 $sql = "SHOW COLUMNS FROM users LIKE 'auth_token'";
 $result = $conn->query($sql);
 if ($result->num_rows == 0) {
@@ -55,16 +47,9 @@ if ($result->num_rows == 0) {
     }
 }
 
-// Get the HTTP method
 $method = $_SERVER['REQUEST_METHOD'];
-
-// Get the request body
 $data = json_decode(file_get_contents("php://input"), true);
-
-// Get the action from query parameter
 $action = isset($_GET['action']) ? $_GET['action'] : '';
-
-// Get auth token from headers or query
 $authToken = null;
 if (isset($_SERVER['HTTP_AUTHORIZATION']) && strpos($_SERVER['HTTP_AUTHORIZATION'], 'Bearer ') === 0) {
     $authToken = substr($_SERVER['HTTP_AUTHORIZATION'], 7);
@@ -72,10 +57,6 @@ if (isset($_SERVER['HTTP_AUTHORIZATION']) && strpos($_SERVER['HTTP_AUTHORIZATION
     $authToken = $_GET['token'];
 }
 
-// Debug output - uncomment if needed
-// error_log("Action: $action, Method: $method, Data: " . json_encode($data));
-
-// Handle different actions
 switch ($action) {
     case 'register':
         register($conn, $data);
@@ -118,12 +99,11 @@ switch ($action) {
         } elseif ($method === 'POST') {
             updateUserPassword($conn, $data);
         } else {
-            http_response_code(405); // Method Not Allowed
+            http_response_code(405); 
             echo json_encode(["error" => "Method not allowed for this action"]);
         }
         break;
     case 'test':
-        // Test endpoint for debugging
         echo json_encode(["message" => "API is working", "method" => $method, "data" => $data]);
         break;
     default:
@@ -131,6 +111,5 @@ switch ($action) {
         echo json_encode(["error" => "Action not found: $action"]);
 }
 
-// Close the database connection
 $conn->close();
 ?>
